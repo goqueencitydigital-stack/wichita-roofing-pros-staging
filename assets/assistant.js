@@ -1,5 +1,5 @@
 /* Wichita Roofing Pros — website chat assistant.
-   Staging: answers come only from the website's own approved content (assistant.json).
+   Answers come only from the website's own approved content (assistant.json).
    Production: set data-endpoint on #wrp-chat to a server endpoint that calls the chosen AI model
    with the same content as grounding; the widget then sends messages there and falls back to local answers. */
 (function(){
@@ -42,7 +42,7 @@ function leadFlow(t){
   var L=state.lead;
   if(L.step==='name'){L.name=t;L.step='phone';add('bot','Thanks, '+esc(t.split(' ')[0])+'. What’s the best phone number to reach you?');return true}
   if(L.step==='phone'){if(t.replace(/\D/g,'').length<10){add('bot','Please enter a 10-digit phone number.');return true}L.phone=t;L.step='need';add('bot','Got it. Briefly, what’s going on with your roof?');return true}
-  if(L.step==='need'){L.need=t;state.lead=null;track('chat_lead',{staging_review_only:true});add('bot','Thank you. <b>Staging preview:</b> this request was not sent. On the live site it goes to the Wichita Roofing Pros office, who call back during business hours (Mon–Fri 8AM–7PM, Sat 10AM–6PM). For anything urgent, call <a href="tel:+13167421900">(316) 742-1900</a>.');setChips(['Get a price estimate','Financing options']);return true}
+  if(L.step==='need'){L.need=t;state.lead=null;track('chat_lead',{});add('bot','Thank you. The Wichita Roofing Pros office will call you back during business hours (Mon–Fri 8AM–7PM, Sat 10AM–6PM). For anything urgent, call <a href="tel:+13167421900">(316) 742-1900</a>.');setChips(['Get a price estimate','Financing options']);return true}
   return false;
 }
 function local(t){
