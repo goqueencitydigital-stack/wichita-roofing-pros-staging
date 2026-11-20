@@ -730,3 +730,4 @@ figure.rev{margin:0}
 html.scrolled .chat,.chat:focus-within{opacity:1;pointer-events:auto;transform:none}
 @media (prefers-reduced-motion:reduce){.chat{transition:none}}
 .phero-photo .crumbs,.phero-photo .crumbs a{text-shadow:0 1px 3px rgba(0,0,0,.7)}
+.phero-photo .crumbs{display:inline-flex;flex-wrap:wrap;background:rgba(17,17,17,.62);padding:6px 12px;border-radius:4px;margin-bottom:14px;color:#fff}.phero-photo .crumbs a{color:#fff}
