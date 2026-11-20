@@ -723,3 +723,10 @@ figure.rev{margin:0}
 .btn.btn-line:hover,.phero-ed .btn.btn-ghost:hover,.sec:not(.dark):not(.orange) .btn.btn-ghost:hover{color:#fff!important}
 .sec .aside-cta .btn-ghost:hover::before,.sec .inset .btn-ghost:hover::before,.sec .cta-band .btn-ghost:hover::before,.sec .form-sec .btn-ghost:hover::before{background:#fff;border-color:#fff}
 .sec .aside-cta .btn.btn-ghost:hover,.sec .inset .btn.btn-ghost:hover,.sec .cta-band .btn.btn-ghost:hover,.sec .form-sec .btn.btn-ghost:hover{color:var(--char)!important}
+.phero-photo h1.h1-long{font-size:clamp(2.1rem,3.9vw,3.5rem);max-width:24ch}
+.phero-photo .lead-more{margin-top:18px;font-size:.98rem;max-width:680px}
+.phero-photo .lead-more p{color:#d1d5db}
+.chat{opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .25s,transform .25s}
+html.scrolled .chat,.chat:focus-within{opacity:1;pointer-events:auto;transform:none}
+@media (prefers-reduced-motion:reduce){.chat{transition:none}}
+.phero-photo .crumbs,.phero-photo .crumbs a{text-shadow:0 1px 3px rgba(0,0,0,.7)}
