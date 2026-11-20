@@ -1610,3 +1610,6 @@ body:has(.fx) .ft>div:first-child>.ft-logo{display:none}
  .prose h2{margin-bottom:.5em}
 }
 .fx-team figure{aspect-ratio:3/2!important;height:auto!important}
+/* space between hero and the quick-quote card */
+.fx-qband{padding-top:clamp(28px,4vw,40px)}
+@media (min-width:1021px){.fx-qband{padding-top:clamp(48px,7svh,80px)}.fx-qband-in{margin-top:0}}
