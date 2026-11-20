@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /
+# Staging. Production robots.txt stays unchanged.
