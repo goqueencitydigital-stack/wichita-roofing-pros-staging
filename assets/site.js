@@ -19,7 +19,7 @@ d.addEventListener('click',function(e){
 
 /* nav */
 var hdr=d.querySelector('.site-header'),mb=d.querySelector('.menu-btn');
-if(mb)mb.addEventListener('click',function(){var o=d.body.classList.toggle('menu-open');mb.setAttribute('aria-expanded',o)});
+if(mb)mb.addEventListener('click',function(){var h=mb.closest('.hdr')||hdr;d.documentElement.style.setProperty('--menu-top',Math.round(h.getBoundingClientRect().bottom)+'px');var o=d.body.classList.toggle('menu-open');mb.setAttribute('aria-expanded',o)});
 d.querySelectorAll('.nav>li>button').forEach(function(b){
   b.addEventListener('click',function(){var li=b.parentNode,o=!li.classList.contains('open');
     d.querySelectorAll('.nav>li.open').forEach(function(x){if(x!==li){x.classList.remove('open');x.firstElementChild.setAttribute('aria-expanded','false')}});

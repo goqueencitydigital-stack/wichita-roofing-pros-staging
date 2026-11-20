@@ -732,3 +732,11 @@ html.scrolled .chat,.chat:focus-within{opacity:1;pointer-events:auto;transform:n
 .phero-photo .crumbs,.phero-photo .crumbs a{text-shadow:0 1px 3px rgba(0,0,0,.7)}
 .phero-photo .crumbs{display:inline-flex;flex-wrap:wrap;background:rgba(17,17,17,.62);padding:6px 12px;border-radius:4px;margin-bottom:14px;color:#fff}.phero-photo .crumbs a{color:#fff}
 .phero-photo .crumbs{display:flex;width:fit-content;max-width:100%}
+/* nav fix: slanted orange shape moved to a pseudo-layer so dropdowns and the phone menu are not clipped */
+.nav-wrap{clip-path:none!important;background:transparent!important;position:relative;isolation:isolate}
+.nav-wrap::before{content:"";position:absolute;inset:0;background:var(--o-fill);clip-path:polygon(26px 0,100% 0,100% 100%,0 100%);z-index:-1;pointer-events:none}
+.dd{z-index:90}
+.nav>li:has(>.dd-mega){position:static}
+.nav-wrap .dd-mega{right:var(--gut);left:auto;top:100%}
+@media (hover:hover) and (min-width:1021px){.nav>li:hover>.dd{display:block}.nav>li:hover>.dd-mega{display:grid}}
+@media (max-width:1020px){.menu-open .nav-wrap .nav{top:var(--menu-top,114px)!important}}
