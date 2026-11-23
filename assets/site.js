@@ -203,3 +203,5 @@ b.addEventListener('click',function(){reels.forEach(function(o){var ov=o.querySe
 v.controls=true;li.classList.add('is-playing');var p=v.play();if(p&&p.catch)p.catch(function(){});try{v.focus({preventScroll:true})}catch(e){}
 if(window.dataLayer)window.dataLayer.push({event:'social_click',cta:'reel-play',reel:li.getAttribute('data-reel')||''})});
 v.addEventListener('ended',function(){li.classList.remove('is-playing');v.controls=false;v.load()})})})();
+/* preselect service category on service pages */
+(function(){var m=location.pathname.match(/\/services\/([a-z-]+)\//);if(!m)return;var map={'residential-roofing':'Residential Roofing','roof-replacement':'Roof Replacement','roof-repair':'Roof Repair','commercial-roofing':'Commercial Roofing','siding-trim':'Siding & Trim','gutters-gutter-guards':'Gutters & Gutter Guards'};var v=map[m[1]];if(!v)return;document.querySelectorAll('select[name="service"]').forEach(function(s){if(s.value)return;for(var i=0;i<s.options.length;i++){if(s.options[i].text===v){s.selectedIndex=i;break}}})})();
