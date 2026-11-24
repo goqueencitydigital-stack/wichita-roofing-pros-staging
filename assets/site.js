@@ -100,6 +100,7 @@ d.querySelectorAll('[data-filter-group]').forEach(function(g){
 
 /* lightbox */
 var lb=d.querySelector('.lightbox');
+if(lb&&!lb.querySelector('img')){var lbi=d.createElement('img');lbi.alt='';lbi.decoding='async';lb.insertBefore(lbi,lb.querySelector('p'))}
 function closeLB(){if(lb&&lb.classList.contains('on')){lb.classList.remove('on');if(lb._ret)lb._ret.focus()}}
 if(lb){
   d.querySelectorAll('[data-lb]').forEach(function(b){b.addEventListener('click',function(){lb.querySelector('img').src=b.dataset.lb;lb.querySelector('img').alt=b.dataset.alt||'';lb.querySelector('p').textContent=b.dataset.alt||'';lb._ret=b;lb.classList.add('on');lb.querySelector('button').focus()})});
