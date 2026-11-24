@@ -145,7 +145,7 @@ d.querySelectorAll('form[data-review]').forEach(function(f){
 });
 
 /* prefill from calculator */
-try{var pf=JSON.parse(sessionStorage.getItem('wrp_estimate')||'null');if(pf){d.querySelectorAll('form[data-form-id=inspection]').forEach(function(f){var m=f.querySelector('[name=message]');if(m&&!m.value)m.value=pf.note;var s=f.querySelector('[name=service]');if(s&&!s.value)s.value='Replacement'})}}catch(e){}
+try{var pf=JSON.parse(sessionStorage.getItem('wrp_estimate')||'null');if(pf){d.querySelectorAll('form[data-form-id=inspection]').forEach(function(f){var m=f.querySelector('[name=message]');if(m&&!m.value)m.value=pf.note;var s=f.querySelector('[name=service]');if(s&&!s.value)s.value='Roof Replacement'})}}catch(e){}
 
 /* quote calculator — $505 per square */
 var PRICE=505;
@@ -167,7 +167,7 @@ d.querySelectorAll('.calc').forEach(function(cf){
     cf.dataset.done='1';
   }
   cf.addEventListener('input',calc);cf.addEventListener('change',calc);
-  cf.addEventListener('submit',function(e){e.preventDefault();calc();if(cf.dataset.done){try{sessionStorage.setItem('wrp_estimate',JSON.stringify(cf._est))}catch(x){}track('calculator_estimate',{squares:+(cf.querySelector('.calc-sq')||{}).textContent.split(' ')[0]||0});var t=d.querySelector(cf.dataset.next||'#inspect');if(t){var m=t.querySelector('[name=message]');try{m.value=JSON.parse(sessionStorage.getItem('wrp_estimate')).note}catch(x){};var s=t.querySelector('[name=service]');if(s)s.value='Replacement';t.scrollIntoView({behavior:RM?'auto':'smooth'});var fn=t.querySelector('input');if(fn)fn.focus({preventScroll:true})}else location.href=BASE+'/free-inspection/#inspect'}});
+  cf.addEventListener('submit',function(e){e.preventDefault();calc();if(cf.dataset.done){try{sessionStorage.setItem('wrp_estimate',JSON.stringify(cf._est))}catch(x){}track('calculator_estimate',{squares:+(cf.querySelector('.calc-sq')||{}).textContent.split(' ')[0]||0});var t=d.querySelector(cf.dataset.next||'#inspect');if(t){var m=t.querySelector('[name=message]');try{m.value=JSON.parse(sessionStorage.getItem('wrp_estimate')).note}catch(x){};var s=t.querySelector('[name=service]');if(s)s.value='Roof Replacement';t.scrollIntoView({behavior:RM?'auto':'smooth'});var fn=t.querySelector('input');if(fn)fn.focus({preventScroll:true})}else location.href=BASE+'/free-inspection/#inspect'}});
   calc();
 });
 
