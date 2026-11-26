@@ -127,11 +127,47 @@ function validate(f){
 /* lead delivery: posts to the Apps Script relay set in <html data-lead> */
 var T0=Date.now();
 try{var qs=new URLSearchParams(location.search),u=['utm_source','utm_medium','utm_campaign','utm_term','gclid'].map(function(k){return qs.get(k)?k.replace('utm_','')+'='+qs.get(k):''}).filter(Boolean).join(' · ');if(u)sessionStorage.setItem('wrp_utm',u);if(!sessionStorage.getItem('wrp_ref')&&d.referrer&&d.referrer.indexOf(location.host)<0)sessionStorage.setItem('wrp_ref',d.referrer)}catch(e){}
+/* spam screening (mirrors the lead relay's filter) */
+function clean_(v){return v==null?'':String(v).trim()}
+var PITCH_RE = /\b(seo|backlinks?|search engine|google (page|ranking)|page 1 of google|first page of google|rank(ing)? (higher|#?1)|web ?design|website (design|redesign)|lead generation|marketing (agency|services)|guest post|reddit|crypto|bitcoin|forex|loan offer|business funding|virtual assistant|reply (with )?["']?interested|unsubscribe|outsourc)/i;
+function gibberish_(s) {
+  // Random-character strings: long tokens that flip between lower and upper case or have no vowels.
+  var words = clean_(s).split(/[^A-Za-z]+/).filter(function (w) { return w.length >= 8; });
+  return words.some(function (w) {
+    var flips = (w.slice(1).match(/[a-z](?=[A-Z])/g) || []).length;
+    var consonantRun = /[bcdfghjklmnpqrstvwxz]{6,}/i.test(w);
+    var noVowels = !/[aeiouy]/i.test(w);
+    return flips >= 2 || consonantRun || noVowels;
+  });
+}
+function spamCheck_(d) {
+  var score = 0, why = [], strong = false;
+  function hit(pts, reason) { score += pts; why.push(reason); if (pts >= 2) strong = true; }
+  var first = clean_(d.first), last = clean_(d.last), name = clean_(d.name) || (first + ' ' + last).trim();
+  var msg = clean_(d.message) + ' ' + clean_(d.need), email = clean_(d.email).toLowerCase();
+  var addr = clean_(d.address), zip = clean_(d.zip), phone = clean_(d.phone).replace(/\D/g, '');
+  if (d.website_url) hit(3, 'hidden spam-trap field filled');
+  if (d.t && Number(d.t) < 2500) hit(3, 'form sent ' + d.t + ' ms after page load');
+  if (gibberish_(name)) hit(2, 'random characters in name');
+  if (gibberish_(msg)) hit(1, 'random characters in message');
+  if (addr && gibberish_(addr)) hit(1, 'random characters in address');
+  if (addr && !/\d/.test(addr) && addr.split(/\s+/).length < 2) hit(1, 'address is not a street address');
+  if (/^\d{5}$/.test(zip) && !/^6[67]/.test(zip)) hit(1, 'ZIP ' + zip + ' is outside Kansas');
+  var local = email.split('@')[0] || '';
+  if ((local.match(/\./g) || []).length >= 3) hit(1, 'email uses the dotted-address trick');
+  if (/\.(site|online|xyz|top|click|shop|store|icu|buzz|live)$/.test(email)) hit(1, 'disposable-style email domain');
+  if (PITCH_RE.test(msg) || PITCH_RE.test(name)) hit(2, 'sales-pitch wording');
+  if (/https?:\/\/|www\.|\.(com|net|org|io)\b/i.test(msg)) hit(1, 'link in message');
+  if (/^1?(800|888|877|866|855|844|833)/.test(phone) || /^(\d)\1{6,}/.test(phone) || /^1?\d{3}555\d{4}$/.test(phone)) hit(1, 'fake or toll-free phone');
+  return { score: score, block: (strong && score >= 3) || score >= 5, reasons: why };
+}
+window.wrpSpamCheck=spamCheck_;
 function sendLead(form,data){
   var ep=d.documentElement.getAttribute('data-lead');if(!ep)return;
   data.form=form;data.page=location.href;data.title=d.title;data.t=Date.now()-T0;
   try{data.utm=sessionStorage.getItem('wrp_utm')||'';data.ref=sessionStorage.getItem('wrp_ref')||''}catch(e){}
   if(/[?&]testlead=1/.test(location.search))data.test=true;
+  var sc=spamCheck_(data);if(sc.block){data.filtered=sc.reasons.join('; ');if(!d.documentElement.hasAttribute('data-lead-filter'))return}
   try{fetch(ep,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)})}catch(e){}
 }
 window.wrpSendLead=sendLead;
